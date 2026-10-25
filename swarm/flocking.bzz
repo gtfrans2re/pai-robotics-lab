@@ -1,0 +1,45 @@
+# Lennard-Jones flocking for foot-bots (ARGoS3 + Buzz).
+# Each robot computes an interaction vector from its neighbors: attractive when
+# far, repulsive when close, so the swarm settles into an even-spaced lattice.
+include "vec2.bzz"
+
+TARGET   = 100.0   # desired inter-robot distance (cm)
+EPSILON  = 100.0   # interaction gain
+MAXSPEED = 10.0    # cm/s
+
+function lj(dist) {
+  return -(EPSILON / dist) * ((TARGET / dist)^4 - (TARGET / dist)^2)
+}
+
+function to_lj_vec(rid, data) {
+  return math.vec2.newp(lj(data.distance), data.azimuth)
+}
+
+function sum_vec(rid, data, accum) {
+  return math.vec2.add(data, accum)
+}
+
+# Turn a desired heading vector (robot frame) into differential wheel speeds.
+function vec_to_wheels(v) {
+  var l = math.vec2.length(v)
+  var a = math.vec2.angle(v)
+  if(l > MAXSPEED) l = MAXSPEED
+  var base = l * math.cos(a)
+  if(base < 0.0) base = 0.0
+  var turn = 10.0 * a
+  set_wheels(base - turn, base + turn)
+}
+
+function init() { set_leds(0, 255, 0) }
+
+function step() {
+  var accum = math.vec2.new(0.0, 0.0)
+  if(neighbors.count() > 0) {
+    accum = neighbors.map(to_lj_vec).reduce(sum_vec, math.vec2.new(0.0, 0.0))
+    accum = math.vec2.scale(accum, 1.0 / neighbors.count())
+  }
+  vec_to_wheels(accum)
+}
+
+function reset()   { set_leds(0, 255, 0) }
+function destroy() {}

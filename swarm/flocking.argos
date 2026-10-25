@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+  <framework>
+    <system threads="0" />
+    <experiment length="0" ticks_per_second="10" random_seed="124" />
+  </framework>
+
+  <controllers>
+    <buzz_controller_footbot id="bcf">
+      <actuators>
+        <differential_steering implementation="default" />
+        <leds implementation="default" medium="leds" />
+        <range_and_bearing implementation="default" />
+      </actuators>
+      <sensors>
+        <range_and_bearing implementation="medium" medium="rab" show_rays="false" />
+        <footbot_proximity implementation="default" show_rays="false" />
+      </sensors>
+      <params bytecode_file="flocking.bo" debug_file="flocking.bdbg" />
+    </buzz_controller_footbot>
+  </controllers>
+
+  <arena size="10, 10, 1" center="0,0,0.5">
+    <box id="wn" size="10,0.1,0.5" movable="false"><body position="0,5,0"  orientation="0,0,0" /></box>
+    <box id="ws" size="10,0.1,0.5" movable="false"><body position="0,-5,0" orientation="0,0,0" /></box>
+    <box id="we" size="0.1,10,0.5" movable="false"><body position="5,0,0"  orientation="0,0,0" /></box>
+    <box id="ww" size="0.1,10,0.5" movable="false"><body position="-5,0,0" orientation="0,0,0" /></box>
+
+    <distribute>
+      <position method="uniform" min="-2,-2,0" max="2,2,0" />
+      <orientation method="uniform" min="0,0,0" max="360,0,0" />
+      <entity quantity="20" max_trials="100">
+        <foot-bot id="fb" rab_range="3">
+          <controller config="bcf" />
+        </foot-bot>
+      </entity>
+    </distribute>
+  </arena>
+
+  <physics_engines><dynamics2d id="dyn2d" /></physics_engines>
+  <media>
+    <range_and_bearing id="rab" />
+    <led id="leds" />
+  </media>
+
+  <visualization>
+    <qt-opengl>
+      <camera>
+        <placements>
+          <placement index="0" position="0,0,9" look_at="0,0,0" up="1,0,0" lens_focal_length="30" />
+        </placements>
+      </camera>
+    </qt-opengl>
+  </visualization>
+</argos-configuration>

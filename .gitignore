@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# Virtual envs
+pai-robotics-venv/
+venv/
+.venv/
+
+# RL artifacts (large / regenerable) — ship via a GitHub Release or git-lfs instead
+rl/models/
+rl/tb/
+*.zip
+*.pkl
+
+# Buzz compiled bytecode
+*.bo
+*.bdbg
+*.basm
+
+# Build trees
+build/
+*.so
+
+# OpenVINO exports / model weights
+*_openvino_model/
+*.pt
+*.onnx
+*.xml
+*.bin
+
+# Raw captures (keep only the processed GIF/stills in assets/)
+*.MOV
+*.mov
+*.mp4
+frames/
+palette*.png
+
+# Keep README media
+!assets/*.gif
+!assets/*.png
+
+# OS
+.DS_Store

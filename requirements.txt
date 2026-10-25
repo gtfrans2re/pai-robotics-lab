@@ -1,0 +1,25 @@
+# Python deps for the RL + edge-AI pillars (install inside the venv).
+# The setup script creates ~/pai-robotics-venv and installs these.
+#
+# Versions are left unpinned for portability; pin from your own `pip freeze`
+# for an exactly reproducible env. Built/tested on Python 3.12, Ubuntu 24.04.
+
+numpy
+opencv-python
+
+# RL
+mujoco
+pybullet
+gymnasium
+stable-baselines3[extra]
+imageio            # required by gymnasium's MuJoCo renderer
+imageio-ffmpeg     # optional, for video recording
+
+# Edge AI
+ultralytics        # YOLOv11 (pulls torch; see README for the CPU-only torch swap)
+openvino
+
+# Note: on this Intel-only machine, torch runs on CPU. To drop the unused
+# CUDA wheels ultralytics pulls in:
+#   pip uninstall -y torch torchvision
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
