@@ -8,6 +8,16 @@ A reproducible **physical-AI / robotics workstation** built from a bare Ubuntu 2
 
 ---
 
+## Table of contents 
+
+1. [What this is](#what-this-is)
+2. [Results (headline)](#results-headline)
+3. [Repo layout](#repo-layout)
+4. [Quickstart](#quickstart)
+5. [Notes and gotchas (hard-won)](#notes--gotchas-hard-won)
+6. [Roadmap](#roadmap)
+7. [Ackwoledgments](#acknowledgements)
+
 ## What this is
 
 A single-session build-out of a full local robotics stack, captured as scripts and demos so it can be reproduced or extended. Three pillars:
