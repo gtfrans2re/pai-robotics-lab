@@ -8,16 +8,6 @@ A reproducible **physical-AI / robotics workstation** built from a bare Ubuntu 2
 
 ---
 
-## Table of contents 
-
-1. [What this is](#what-this-is)
-2. [Results (headline)](#results-headline)
-3. [Repo layout](#repo-layout)
-4. [Quickstart](#quickstart)
-5. [Notes and gotchas (hard-won)](#notes--gotchas-hard-won)
-6. [Roadmap](#roadmap)
-7. [Ackwoledgments](#acknowledgements)
-
 ## What this is
 
 A single-session build-out of a full local robotics stack, captured as scripts and demos so it can be reproduced or extended. Three pillars:
@@ -53,6 +43,26 @@ A stable walker sits at ep_len ≈ 1000 and reward ≈ 5,000–6,000 — **SAC g
 
 ---
 
+## GPU training (Brax on Colab)
+
+The CPU runs above are the main story; `cloud/` adds a **GPU-accelerated** counterpart using
+**Brax** (JAX, GPU-vectorized physics). Thousands of humanoids stepped in parallel on one GPU
+bring a 100M-step run down to **~1.5 hours** — versus ~21 h on CPU.
+
+![Brax humanoid on GPU](assets/humanoid_brax_gpu.gif)
+
+| GPU | Steps | Wall-clock | Final reward |
+|---|---:|---:|---:|
+| Colab Pro Tesla T4 | 100 M | **1h37m58s** | **≈ 7,392** (peak ~7,700) |
+
+This is Brax's humanoid (a *different* implementation from the Gymnasium `Humanoid-v5` used with
+SB3 above — same task, different engine), so its JAX params aren't loadable by `watch_sac.py`.
+Notebook, run steps, the measured result, and the (many) version gotchas are in
+[cloud/README.md](cloud/README.md). Key lesson on the gait: `ctrl_cost_weight` is the stability
+dial and must stay **low** (0.1) — raising it makes the humanoid too timid to balance, so it falls.
+
+---
+
 ## Repo layout
 
 ```
@@ -73,9 +83,13 @@ pai-robotics-lab/
 │   ├── check_devices.py       # list OpenVINO devices + names
 │   ├── benchmark_yolo_openvino.py  # YOLOv11n latency: CPU vs GPU vs NPU
 │   └── README.md
+├── cloud/                     # GPU training on Colab (Brax / JAX)
+│   ├── brax_humanoid_colab.ipynb   # working notebook (verified version pins)
+│   ├── humanoid_brax_params        # the trained policy (1.3 MB)
+│   └── README.md              # run steps, result, version gotchas, Brax/JAX background
 ├── docs/
 │   └── results.md             # full results + gait analysis
-├── assets/                    # README media (GIF, stills)
+├── assets/                    # README media (GIFs, stills, training curve)
 ├── requirements.txt
 ├── setup/setup_robotics.sh
 ├── .gitignore
