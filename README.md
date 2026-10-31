@@ -6,6 +6,10 @@ A reproducible **physical-AI / robotics workstation** built from a bare Ubuntu 2
 
 *Same MuJoCo `Humanoid-v5` task, two algorithms. **Left (PPO):** a fast but forward-pitched, hunched lope that covers ground by falling forward productively. **Right (SAC):** an upright, arms-out, balance-first gait that stays composed for full episodes. See [docs/results.md](docs/results.md).*
 
+![Humanoid locomotion — Brax on GPU](assets/humanoid_brax_gpu.gif)
+
+*And the GPU path: a humanoid trained with **Brax** (JAX, GPU-vectorized) on a single Colab T4 — 100M steps in **~1.5 h** vs ~21 h on CPU. Together the three clips trace the progression: **CPU PPO** (fast, falls) → **CPU SAC** (slow, stable) → **GPU Brax** (fast to train, upright and walking). See [cloud/README.md](cloud/README.md).*
+
 ---
 
 ## What this is
