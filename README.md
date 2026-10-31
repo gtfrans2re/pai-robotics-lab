@@ -12,6 +12,19 @@ A reproducible **physical-AI / robotics workstation** built from a bare Ubuntu 2
 
 ---
 
+## Contents
+
+- [What this is](#what-this-is)
+- [Results (headline)](#results-headline)
+- [GPU training (Brax on Colab)](#gpu-training-brax-on-colab)
+- [Repo layout](#repo-layout)
+- [Quickstart](#quickstart)
+- [Notes & gotchas](#notes--gotchas-hard-won)
+- [Roadmap](#roadmap)
+- [Acknowledgements](#acknowledgements)
+
+---
+
 ## What this is
 
 A single-session build-out of a full local robotics stack, captured as scripts and demos so it can be reproduced or extended. Three pillars:
@@ -58,6 +71,10 @@ bring a 100M-step run down to **~1.5 hours** — versus ~21 h on CPU.
 | GPU | Steps | Wall-clock | Final reward |
 |---|---:|---:|---:|
 | Colab Pro Tesla T4 | 100 M | **1h37m58s** | **≈ 7,392** (peak ~7,700) |
+
+![Training curve — reward vs env steps](assets/humanoid_brax_training_curve.png)
+
+*Training wasn't monotonic: reward climbed past ~7,300 by ~60M steps, then **crashed to ~800 around 72M** before clawing back to ~7,400 — a good reminder that PPO can destabilize mid-run and recover. Judge the policy by the final rollout, not a single eval.*
 
 This is Brax's humanoid (a *different* implementation from the Gymnasium `Humanoid-v5` used with
 SB3 above — same task, different engine), so its JAX params aren't loadable by `watch_sac.py`.
